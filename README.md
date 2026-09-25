@@ -1,259 +1,128 @@
-<<<<<<< HEAD
-# StreamFlix - Adaptive Video Player & Content Browsing Experience
-> **GLA University Mini Project - 1 (Batch 8, Section AE)**  
-> **Faculty Guide:** Satyam Kumar Jha  
-> **Built by:** Nitish Kumar Rawat, Pallavit Yadav, Prabhanshu Thakur, Piyush Kumar Yadav, and Prince.
-
----
-
-## 🌟 Overview & Architecture
-StreamFlix is a 10-page frontend-only streaming website built using pure **HTML5, CSS3, and JavaScript**. There are **no backend or database dependencies**—all states (Watchlist, Watch Progress, Unlocked PINs, Profiles) are maintained seamlessly via the browser's `localStorage`.
-
-### 📄 The 10 Webpages
-1. `index.html` - Home Page with featured Hero banner and horizontal content rails.
-2. `browse.html` - Full catalog browsing with multi-parameter filtering (Genre, Year, Maturity, Sorting).
-3. `category.html` - Dedicated category showcase with spotlights and deep dives.
-4. `search.html` - Instant live keyword search with zero-delay results and recommendations.
-5. `player.html` - Custom HTML5 Adaptive Video Player with ABR, Buffering indicator, and Stats HUD.
-6. `details.html` - In-depth movie metadata, chapter selection, cast, and specs.
-7. `login.html` - Netflix-style dark translucent authentication with demo switchers.
-8. `signup.html` - Multi-tier plan selection (Mobile, Standard, VIP Premium).
-9. `mylist.html` - Personal watchlist with instant removal and persistence.
-10. `locked.html` - VIP Protected content gate with interactive PIN pad (`1234`).
-11. `profile.html` - User profile, playback preferences, and continue-watching timeline.
-
----
-
-## 🚀 How to Run the Website
-Because StreamFlix is built purely in vanilla HTML5, CSS3, and JavaScript, you can run it in multiple ways:
-
-### Option 1: Direct Browser Launch
-Simply double-click `index.html` to open it in **Google Chrome**, **Microsoft Edge**, or **Mozilla Firefox**.
-
-### Option 2: Lightweight Local Web Server
-If you prefer running via HTTP:
-```bash
-# Using Python
-python -m http.server 8080
-
-# Using Node / npx
-npx serve .
-```
-Then visit: `http://localhost:8080/`
-
----
-
-## 🎮 Interactive Features to Test
-- **HTML5 Adaptive Video Player (`player.html`)**:
-  - Scrub progress bar, volume slider, playback speed (0.5x to 2x), fullscreen.
-  - **Quality Switcher**: Toggle between Auto (ABR), 1080p, 720p, 480p, 360p.
-  - **Network Simulator**: Switch between Fiber (100 Mbps), 4G (25 Mbps), 3G (4 Mbps), Edge (700 Kbps), or Offline Drop to see buffering stall!
-  - **Stats for Nerds HUD**: Press `D` or click the 📊 icon to open the Netflix diagnostic overlay.
-- **TV Remote Navigation**:
-  - Click the **📺 TV Remote** button in the header or use arrow keys on your keyboard (`Up`, `Down`, `Left`, `Right`, `Enter`).
-- **Protected Content & Parental Control**:
-  - Navigate to `locked.html` or click any locked title.
-  - Enter Default PIN `1234` on the keypad to unlock!
-- **GLA Synopsis Modal**:
-  - Click **🎓 GLA Synopsis** in the header to view the team members, university details, and objective checklist.
-=======
 # Adaptive Video Player & Content Browsing Experience
 
-An end-to-end, high-performance media browsing and playback application built entirely with client-side logic against a bundled video and metadata catalog.
+> **Live demo:** [https://nitish409.github.io/adaptive-video-player/](https://nitish409.github.io/adaptive-video-player/)
 
-Designed to emulate the seamless user experience of modern streaming giants (such as Netflix, Apple TV, and Disney+) with a specialized 10-foot TV remote navigation model, an interactive simulated Adaptive Bitrate (ABR) engine, buffering state transitions, and a DRM content-protection locked overlay.
+An end-to-end, high-performance media browsing and playback application built entirely with client-side logic against a bundled video and metadata catalog. StreamFlix emulates the seamless experience of modern streaming services with adaptive-quality indicators, buffering states, locked-content overlays, and 10-foot TV remote navigation.
 
----
+## 📋 Project Overview
 
-## 📋 Project Specifications & Requirements
+This project is a rich media-browsing and playback experience built with client-side logic against a bundled video and metadata catalog. It includes a Netflix-style catalog, simulated adaptive bitrate switching, buffering recovery states, content-protection flows, and keyboard/remote navigation.
 
-This project addresses the college curriculum specification:
+## 🌟 Key Features
 
-> **"A rich media-browsing and playback experience built entirely with client-side logic against a bundled video/metadata catalog. The player UI must simulate adaptive-quality switching indicators, buffering states, and a content-protection style 'locked' overlay purely as UI states, alongside a Netflix-style browsing rail with keyboard and remote-style navigation."**
+### Netflix-style browsing
 
----
+- Cinematic hero banner with featured titles, previews, metadata, synopsis, and playback actions.
+- Dynamic horizontal content rails for trending, recommended, premium, sci-fi, nature, and animated titles.
+- Interactive media cards with hover/focus states, trailers, duration, age classification, and quick actions.
+- Detailed metadata views with cast, chapters, technical stream specifications, audio, and subtitle tracks.
 
-## 🌟 Key Features & Architectural Highlights
+### 10-foot keyboard and remote navigation
 
-### 1. 🎬 Netflix-Style Content Browsing Experience
-* **Cinematic Hero Banner**: Features highlighted titles with auto-playing previews, high-resolution backdrops, metadata tags (4K UHD, HDR, Dolby Atmos, 98% Match), synopsis, and direct playback triggers.
-* **Dynamic Horizontal Rails**: Horizontally scrolling content rails organized by genres and categories:
-  * *🔥 Trending Now*
-  * *⭐ Top 10 Picks for You*
-  * *🔒 DRM Protected Vault & Premium Tiers*
-  * *🚀 Sci-Fi & Cybernetic Frontiers*
-  * *🌿 Earth & Nature Masterpieces*
-  * *🎬 Award-Winning Animated Cinema*
-* **Interactive Media Cards**: Rich hover and focus states displaying trailer previews, duration, age classification, and quick actions (Play, Add to My List, Like, Detailed Info).
-* **Deep Metadata Modal**: Displays synopsis, full cast and crew, chapter marks, technical stream specifications, and available audio/subtitle tracks.
+- D-pad navigation with the arrow keys across heroes, rails, cards, and player controls.
+- `Enter` / `Return` to select items and trigger playback.
+- `Escape` / `Backspace` to go back or close dialogs.
+- Visual focus rings and an on-screen virtual remote for keyboard, mouse, and touch testing.
 
-### 2. 🎮 10-Foot Keyboard & Remote-Style Navigation
-* **True D-Pad Navigation**: Full keyboard navigation mimicking a Smart TV remote control:
-  * `Arrow Keys` (`Up`, `Down`, `Left`, `Right`): Seamless focus movement across hero banners, rail cards, and player controls.
-  * `Enter` / `Return`: Select, trigger playback, or confirm actions.
-  * `Escape` / `Backspace`: Return to catalog or exit current modal.
-* **Visual Focus Rings**: Custom glowing focus indicators (`tv-focused-card`) with smooth spring scaling to simulate lean-back television viewing.
-* **On-Screen Virtual Remote Control**: Toggleable interactive software remote widget allowing evaluators on laptops or mobile devices to test D-pad and TV controls using touch or mouse clicks.
+### Simulated adaptive bitrate (ABR)
 
-### 3. ⚡ Simulated Adaptive Bitrate (ABR) & Quality Switching
-* **Client-Side ABR Engine**: Continuously assesses simulated network throughput and forward buffer health to dynamically switch between video quality profiles:
-  * **2160p (4K UHD)**: 18.5 Mbps — HEVC / H.265 (60 fps)
-  * **1080p (Full HD)**: 6.2 Mbps — AVC / H.264 (60 fps)
-  * **720p (HD)**: 3.1 Mbps — AVC / H.264 (30 fps)
-  * **480p (SD)**: 1.4 Mbps — AVC / H.264 (30 fps)
-  * **360p (Low)**: 650 Kbps — AVC / H.264 (24 fps)
-* **Adaptive Quality Switching Indicators**: Real-time non-intrusive toast banners and player HUD badges indicating dynamic stream upscaling and downscaling events (e.g., *"Downscaling to 720p 60fps due to bandwidth drop"*).
-* **Interactive Network Throttling Console**: Evaluators can dynamically change network conditions (*Gigabit Fiber*, *Broadband 15 Mbps*, *4G 4 Mbps*, *Throttled 3G 1.2 Mbps*, *Congested 0.5 Mbps*, or *Offline*) to observe the ABR algorithm adapt in real time.
+The player simulates network-aware quality selection across these profiles:
 
-### 4. ⏳ Buffering States & Stall Simulation
-* **Buffer Health Tracking**: Real-time visualization of buffered seconds ahead of the playhead.
-* **Graceful Stall Recovery**: Animated branding spinner displaying buffer progress percentage and recovery threshold countdown.
-* **One-Click Stall Simulation**: Interactive trigger to simulate sudden buffer underrun and evaluate playback recovery mechanics.
+- **2160p (4K UHD):** 18.5 Mbps — HEVC / H.265, 60 fps
+- **1080p (Full HD):** 6.2 Mbps — AVC / H.264, 60 fps
+- **720p (HD):** 3.1 Mbps — AVC / H.264, 30 fps
+- **480p (SD):** 1.4 Mbps — AVC / H.264, 30 fps
+- **360p (Low):** 650 Kbps — AVC / H.264, 24 fps
 
-### 5. 🔒 Content-Protection 'Locked' Overlay (Simulated DRM)
-* **Pure UI State DRM Model**: Gated items simulate hardware-backed digital rights management (Widevine L1, PlayReady, and FairPlay Streaming).
-* **Encrypted Content UI**:
-  * Warning states for encrypted payloads and HDCP 2.2 compliant display requirements.
-  * Simulated cryptographic key acquisition challenge and response handshake animation.
-  * Interactive PIN / Key Token authorization to unlock and resume playback seamlessly.
+Network throttling controls, quality badges, and toast notifications make quality changes visible during playback.
 
-### 6. 📊 Stream Diagnostics ("Stats for Nerds")
-* Transparent diagnostic overlay inspired by YouTube and Netflix displaying:
-  * Viewport / Display Resolution
-  * Current vs. Optimal Rendition
-  * Estimated Bandwidth & Network Latency
-  * Forward Buffer Health (seconds)
-  * Dropped Frames & Codec Details
-  * DRM Security State
+### Buffering and content protection
 
----
+- Forward-buffer health tracking and stall recovery simulation.
+- One-click buffer underrun simulation.
+- Simulated DRM states for Widevine L1, PlayReady, and FairPlay Streaming.
+- PIN/key-token authorization flow for locked content, including a simulated license handshake.
+
+### Stream diagnostics
+
+The “Stats for Nerds” overlay displays viewport resolution, current and optimal rendition, estimated bandwidth, latency, forward buffer health, dropped frames, codec details, and DRM security state.
+
+## 📄 Application Pages
+
+1. `index.html` — Home page with featured hero banner and content rails.
+2. `browse.html` — Catalog browsing with genre, year, maturity, and sorting filters.
+3. `category.html` — Category showcase with spotlights and deep dives.
+4. `search.html` — Live keyword search and recommendations.
+5. `player.html` — Custom HTML5 adaptive video player.
+6. `details.html` — Movie metadata, chapters, cast, and specifications.
+7. `login.html` — Demo authentication page.
+8. `signup.html` — Mobile, Standard, and VIP Premium plan selection.
+9. `mylist.html` — Persistent personal watchlist.
+10. `locked.html` — Protected-content gate with PIN pad.
+11. `profile.html` — Playback preferences and continue-watching timeline.
 
 ## 🛠️ Technology Stack
 
 | Layer | Technology | Purpose |
 |---|---|---|
-| **Framework** | [React 19](https://react.dev/) | Client-side reactive UI & state architecture |
-| **Language** | [TypeScript](https://www.typescriptlang.org/) | Type-safe data contracts, stream profiles, & media types |
-| **Bundler & Tooling** | [Vite](https://vite.dev/) | Ultra-fast HMR and optimized production bundling |
-| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) | Modern utility-first styling with dark-mode defaults |
-| **Icons** | [Lucide React](https://lucide.dev/) | High-clarity iconography for TV controls and media state |
+| Markup | HTML5 | Application structure and media elements |
+| Styling | CSS3 | Responsive dark streaming interface and focus states |
+| Logic | JavaScript | Catalog, navigation, player simulation, and persistence |
 
----
-
-## 🔄 System Architecture & Data Flow
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                 Bundled Media Catalog                       │
-│    (Metadata, Open Video Streams, DRM Flags, Chapters)       │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-            ┌──────────────────┴──────────────────┐
-            ▼                                     ▼
-┌───────────────────────────┐         ┌───────────────────────────┐
-│ Netflix-Style Browsing UI │         │ TV Remote Navigation      │
-│  - Hero Auto-Preview      │         │  - D-Pad Arrow Navigation │
-│  - Horizontal Rail Engine │◄───────►│  - Focus Management       │
-│  - Media Modal Dialogs    │         │  - Virtual Remote Widget  │
-└───────────┬───────────────┘         └───────────────────────────┘
-            │ Launch Stream
-            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                 Adaptive Video Player Core                  │
-│                                                             │
-│   ┌───────────────────────┐     ┌───────────────────────┐   │
-│   │   ABR Simulation      │     │ DRM Protection State  │   │
-│   │  - Bandwidth Monitor  │     │  - License Handshake  │   │
-│   │  - Dynamic Bitrate    │     │  - 'Locked' Overlay   │   │
-│   │  - Quality Indicators │     │  - Security Level L1  │   │
-│   └───────────────────────┘     └───────────────────────┘   │
-│   ┌───────────────────────┐     ┌───────────────────────┐   │
-│   │ Buffering Engine      │     │ Diagnostic Overlay    │   │
-│   │  - Buffer Stall UI    │     │  - "Stats for Nerds"  │   │
-│   │  - Rebuffer Recovery  │     │  - Live Latency Meter │   │
-│   └───────────────────────┘     └───────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## ⌨️ Navigation & Keyboard Shortcuts
-
-| Key | Context | Action |
-|---|---|---|
-| `↑` `↓` `←` `→` | Browsing / Player | Navigate active focus across cards, hero, and player controls |
-| `Enter` / `Return` | Any | Select highlighted card / Play title / Confirm action |
-| `Space` | Player | Toggle Play / Pause |
-| `Escape` / `Backspace` | Any | Back / Close modal / Exit video player |
-| `F` | Player | Toggle Fullscreen mode |
-| `M` | Player / Hero | Toggle Audio Mute / Unmute |
-| `C` | Player | Cycle Subtitles & Closed Captions |
-| `Q` | Player | Open Adaptive Quality renditions menu |
-| `S` | Player | Toggle "Stats for Nerds" technical overlay |
-| `B` | Player | Simulate buffer stall and underrun state |
-| `R` | Browsing | Toggle on-screen Virtual TV Remote control |
-| `?` | Browsing | Show Keyboard Shortcuts reference cheat sheet |
-
----
-
-## 🚀 Getting Started & Local Development
+## 🚀 Getting Started
 
 ### Prerequisites
-* **Node.js**: v18.0.0 or later (v24.x recommended)
-* **npm**: v9.0.0 or later
 
-### Installation & Run
+- Node.js v18.0.0 or later
+- npm v9.0.0 or later
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/nitish409/adaptive-video-player.git
-   cd adaptive-video-player
-   ```
+### Installation and local development
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+```bash
+git clone https://github.com/nitish409/adaptive-video-player.git
+cd adaptive-video-player
+npm install
+npm run dev
+```
 
-3. **Start local development server**:
-   ```bash
-   npm run dev
-   ```
-   Open your browser at `http://localhost:5173`.
+Open `http://localhost:5173` in your browser. To create a production build, run:
 
-4. **Build for production**:
-   ```bash
-   npm run build
-   ```
+```bash
+npm run build
+```
 
----
+For a static-only preview, the site can also be served with a lightweight web server:
 
-## 🧪 College Demonstration & Evaluation Checklist
+```bash
+python -m http.server 8080
+```
 
-To verify all requirements during project grading:
+## ⌨️ Keyboard Shortcuts
 
-1. **Netflix Browsing Rails**:
-   * Scroll horizontally through the rails using either the mouse wheel, navigation arrows, or the keyboard arrow keys.
-   * Observe smooth focus shifts with glowing border highlights on the active media card.
-2. **Keyboard & Remote Navigation**:
-   * Press `Arrow Down` to jump from the Hero banner into the browsing rails.
-   * Click the floating remote icon (or press `R`) to open the on-screen TV Remote and use its D-Pad buttons.
-3. **Adaptive Quality Switching**:
-   * Open any video title and launch the Network Condition drawer from the top bar.
-   * Switch the network from **Fiber (50 Mbps)** to **Throttled 3G (1.2 Mbps)**.
-   * Observe the toast alert and quality indicator adapt down from **1080p/4K** to **480p/360p**.
-4. **Buffering States**:
-   * Click the **"Simulate Stall"** button (or press `B`) inside the player to observe the simulated buffer starvation and recovery sequence.
-5. **DRM Content-Protection Locked Overlay**:
-   * Navigate to the **"DRM Protected Vault & Premium Tiers"** rail.
-   * Select a title (e.g., *Neon Horizon* or *The Obsidian Citadel*).
-   * Notice the player immediately displays the hardware-protection locked UI state with license key acquisition prompts.
-   * Click **"Simulate License Acquisition / Unlock"** to run the simulated cryptographic challenge and start playback.
+| Key | Action |
+|---|---|
+| `↑` `↓` `←` `→` | Navigate active focus |
+| `Enter` / `Return` | Select or play |
+| `Space` | Toggle play/pause |
+| `Escape` / `Backspace` | Back or close a modal |
+| `F` | Toggle fullscreen |
+| `M` | Toggle mute |
+| `C` | Cycle subtitles |
+| `Q` | Open quality menu |
+| `S` | Toggle Stats for Nerds |
+| `B` | Simulate a buffer stall |
+| `R` | Toggle the virtual TV remote |
+| `?` | Show shortcut reference |
 
----
+## 🧪 Demonstration Checklist
 
-## 📄 License & Attribution
+1. Browse the horizontal rails and test focus movement with the arrow keys.
+2. Open the virtual remote with the floating remote icon or by pressing `R`.
+3. Open a video and switch from Fiber to throttled 3G in the network controls.
+4. Use **Simulate Stall** or press `B` to observe buffer starvation and recovery.
+5. Open a protected title and run the simulated license acquisition flow.
 
-* **Open-Source Test Media**: Video assets and trailers are sourced from the Blender Foundation open-movie projects (*Tears of Steel*, *Big Buck Bunny*, *Sintel*, *Elephants Dream*) under Creative Commons licensing.
-* **Academic Submission**: Developed as a college project for media streaming systems and modern web architecture.
->>>>>>> f9c8e2d43930e4a231d87c704eba8a0e899c4192
+## 📄 License and Attribution
+
+- Open-source test media and trailers are sourced from Blender Foundation open-movie projects, including *Tears of Steel*, *Big Buck Bunny*, *Sintel*, and *Elephants Dream*, under their respective Creative Commons licenses.
+- Developed as a college project for media streaming systems and modern web architecture.
