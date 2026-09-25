@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category Showcase - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/rails.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container">
+    <!-- Category Header with Genre Switcher -->
+    <div class="category-hero" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+      <div>
+        <span class="univ-tag" id="cat-subtag">GENRE COLLECTION</span>
+        <h1 class="category-title" id="cat-heading">Sci-Fi & Cyberpunk Visions</h1>
+        <p class="category-desc" id="cat-desc">Mind-bending realities, deep space exploration, and futuristic artificial intelligences.</p>
+      </div>
+
+      <div class="filter-group">
+        <label for="select-category-view" class="form-label" style="margin:0;">Select Category:</label>
+        <select id="select-category-view" class="filter-select">
+          <option value="scifi">Sci-Fi & Cyberpunk</option>
+          <option value="action">Action & Thrillers</option>
+          <option value="documentaries">Award-Winning Documentaries</option>
+          <option value="originals">StreamFlix Originals</option>
+          <option value="top10">Top 10 Today</option>
+          <option value="locked">VIP Locked Titles</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Category Featured Spotlight -->
+    <div id="category-spotlight" style="margin-bottom: 40px;"></div>
+
+    <!-- Category Grid -->
+    <h3 class="section-heading" id="cat-grid-title">All Titles in this Category</h3>
+    <div class="media-grid" id="category-grid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <span class="brand-text">STREAM<span class="brand-red">FLIX</span></span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="category.html">Categories</a>
+          <a href="mylist.html">My List</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Pallavit Yadav (2415001085)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/rails.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('category');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('cat') || 'scifi';
+
+      const catSelect = document.getElementById('select-category-view');
+      catSelect.value = catParam;
+
+      const catHeading = document.getElementById('cat-heading');
+      const catDesc = document.getElementById('cat-desc');
+      const spotlightEl = document.getElementById('category-spotlight');
+      const grid = document.getElementById('category-grid');
+
+      const CATEGORY_META = {
+        scifi: { title: '🚀 Sci-Fi & Cyberpunk Visions', desc: 'Mind-bending realities, deep space exploration, and artificial intelligence.', filter: item => item.genre === 'Sci-Fi' || item.categories.includes('Sci-Fi') },
+        action: { title: '💥 Action & High-Octane Thrillers', desc: 'Explosive chases, elite heist operations, and covert espionage.', filter: item => item.genre === 'Action' || item.categories.includes('Action') || item.genre === 'Thrillers' },
+        documentaries: { title: '🌍 Award-Winning Documentaries', desc: 'Stunning wilderness expeditions, planetary ecology, and groundbreaking investigative journalism.', filter: item => item.genre === 'Documentaries' || item.categories.includes('Documentaries') },
+        originals: { title: '⭐ StreamFlix Originals', desc: 'Groundbreaking cinema produced exclusively for the StreamFlix community.', filter: item => item.isOriginal },
+        top10: { title: '🏆 Top 10 Today in India', desc: 'The most watched, talked-about blockbusters streaming right now.', filter: item => Boolean(item.topTenRank) },
+        locked: { title: '🔒 Premium VIP & Protected Content', desc: 'Exclusive VIP releases, DRM-protected premieres, and parental PIN-locked content.', filter: item => item.isLocked }
+      };
+
+      function renderCategory(catKey) {
+        const conf = CATEGORY_META[catKey] || CATEGORY_META.scifi;
+        catHeading.textContent = conf.title;
+        catDesc.textContent = conf.desc;
+
+        let items = BUNDLED_CATALOG.filter(conf.filter);
+        if (catKey === 'top10') {
+          items.sort((a, b) => (a.topTenRank || 99) - (b.topTenRank || 99));
+        }
+
+        // Render Spotlight Feature
+        if (items.length > 0) {
+          const feat = items[0];
+          spotlightEl.innerHTML = `
+            <div class="details-hero" style="background-image: url('${feat.backdropUrl}'); min-height: 400px;">
+              <div class="details-hero-vignette"></div>
+              <div class="details-hero-content">
+                <span class="badge badge-red" style="margin-bottom: 8px;">CATEGORY SPOTLIGHT</span>
+                <h2 class="details-title" style="font-size: 2.2rem;">${feat.title}</h2>
+                <div class="details-meta-row">
+                  <span class="match-score">${feat.matchScore}% Match</span>
+                  <span class="cert-badge">${feat.rating}</span>
+                  <span>${feat.duration}</span>
+                  <span class="hd-badge">${feat.resolution}</span>
+                </div>
+                <p class="details-synopsis" style="max-width: 600px;">${feat.synopsis}</p>
+                <div style="display:flex; gap:12px;">
+                  <button class="btn btn-primary" onclick="handleCardPlay('${feat.id}')">▶ Play Now</button>
+                  <a href="details.html?id=${feat.id}" class="btn btn-secondary">ℹ More Details</a>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          spotlightEl.innerHTML = '';
+        }
+
+        // Render Grid
+        grid.innerHTML = '';
+        items.forEach((item, index) => {
+          const rank = catKey === 'top10' ? (index + 1) : null;
+          grid.appendChild(createMediaCard(item, rank));
+        });
+      }
+
+      catSelect.addEventListener('change', (e) => {
+        const newCat = e.target.value;
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('cat', newCat);
+        window.history.pushState({}, '', newUrl);
+        renderCategory(newCat);
+      });
+
+      renderCategory(catParam);
+    });
+  </script>
+</body>
+</html>

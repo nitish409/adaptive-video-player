@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix Player - Adaptive Bitrate & Controls</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/player.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body style="background: #000; overflow: hidden;">
+
+  <div class="player-fullscreen-wrapper" id="player-container">
+    <!-- HTML5 Native Video Tag with Media API Integration -->
+    <video id="main-video-element" class="player-video" playsinline preload="auto">
+      Your browser does not support the HTML5 video tag.
+    </video>
+
+    <!-- Visible State Indicators: Buffering Spinner, Loading, Paused, Quality Toast -->
+    <div class="player-loading-spinner" id="player-loading-spinner" title="Loading Media Stream"></div>
+    <div class="player-buffering-badge" id="player-buffering-badge">
+      <div class="player-loading-spinner show" style="position:static; transform:none; width:28px; height:28px; border-width:3px;"></div>
+      <span>Buffering content...</span>
+    </div>
+    <div class="player-paused-badge" id="player-paused-badge">⏸</div>
+    <div class="player-toast-banner" id="player-quality-toast">Switched to 1080p Full HD</div>
+
+    <!-- Diagnostic Stats for Nerds HUD (Key D) -->
+    <div class="player-stats-hud" id="player-stats-hud"></div>
+
+    <!-- Netflix-Style Custom Dark Controls Overlay -->
+    <div class="player-controls-overlay active" id="player-controls-overlay">
+      <!-- Top Bar: Back Button, Title, Academic Project Badge -->
+      <div class="player-top-bar">
+        <a href="index.html" class="player-back-btn" title="Back to Home / Browse">
+          &larr; <span style="font-size: 0.95rem;">Back</span>
+        </a>
+        <div class="player-title-info">
+          <h2 class="player-title" id="player-video-title">Cyber Genesis: 2099</h2>
+          <span class="player-tagline" id="player-video-tagline">When consciousness transcends synthetic borders.</span>
+        </div>
+      </div>
+
+      <!-- Bottom Controls: Scrubber, Timers, Buttons, ABR Quality Switcher, Speed -->
+      <div class="player-bottom-bar">
+        <!-- Scrubber Progress Bar -->
+        <div class="scrubber-container">
+          <div class="progress-track" id="player-progress-bar">
+            <div class="progress-buffered" id="progress-buffered"></div>
+            <div class="progress-played" id="progress-played"></div>
+          </div>
+          <div class="time-display">
+            <span id="time-current">00:00</span> / <span id="time-duration">00:00</span>
+          </div>
+        </div>
+
+        <!-- Buttons Row -->
+        <div class="control-buttons-row">
+          <!-- Left: Play/Pause, Replay 10s, Forward 10s, Volume Slider -->
+          <div class="left-controls">
+            <button class="player-btn" id="btn-play-pause" title="Play / Pause (Space / K)">
+              <span id="icon-play">▶</span>
+              <span id="icon-pause" style="display:none;">⏸</span>
+            </button>
+
+            <button class="player-btn" id="btn-rewind" title="Rewind 10 seconds (Left Arrow)">
+              ⏪ 10s
+            </button>
+            <button class="player-btn" id="btn-forward" title="Forward 10 seconds (Right Arrow)">
+              ⏩ 10s
+            </button>
+
+            <div class="volume-group">
+              <button class="player-btn" id="btn-volume" title="Toggle Mute (M)">🔊</button>
+              <input type="range" id="slider-volume" class="volume-slider" min="0" max="1" step="0.05" value="1" title="Volume (Up/Down Arrows)" />
+            </div>
+          </div>
+
+          <!-- Right: Speed, Network Simulator, Quality Switcher, Stats HUD, Fullscreen -->
+          <div class="right-controls">
+            <!-- Playback Speed -->
+            <select id="select-playback-speed" class="speed-select" title="Playback Speed">
+              <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
+              <option value="1" selected>1.0x (Normal)</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2">2.0x</option>
+            </select>
+
+            <!-- Network Condition Simulator (To demonstrate ABR dynamic switching) -->
+            <div class="player-dropdown-group">
+              <button class="pill-select-btn" id="btn-network-select" title="Simulate Network Bandwidth (Fiber, 4G, 3G, Edge, Drop)">
+                <span id="label-current-network">⚡ 100 Mbps</span> &blacktriangledown;
+              </button>
+              <div class="player-dropdown-menu" id="menu-network"></div>
+            </div>
+
+            <!-- Simulated Quality Switcher (Auto, 1080p, 720p, 480p, 360p) -->
+            <div class="player-dropdown-group">
+              <button class="pill-select-btn" id="btn-quality-select" title="Change Resolution & Bitrate (Q)">
+                ⚙ <span id="label-current-quality">Auto (FHD)</span> &blacktriangledown;
+              </button>
+              <div class="player-dropdown-menu" id="menu-quality"></div>
+            </div>
+
+            <!-- Diagnostic Stats HUD Toggle -->
+            <button class="player-btn" id="btn-toggle-stats" title="Toggle Stats for Nerds HUD (D)">
+              📊
+            </button>
+
+            <!-- Virtual Remote on-screen launcher -->
+            <button class="player-btn" onclick="toggleVirtualRemote()" title="Toggle Virtual TV Remote">
+              📺
+            </button>
+
+            <!-- Fullscreen API Toggle -->
+            <button class="player-btn" id="btn-fullscreen" title="Toggle Fullscreen (F)">
+              ⛶
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/remote.js"></script>
+</body>
+</html>

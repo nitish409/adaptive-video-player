@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile & History - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container" style="max-width: 960px;">
+    <!-- Profile Header Card -->
+    <div class="profile-header-card">
+      <img src="" alt="Avatar" id="profile-avatar-img" class="profile-avatar-large" />
+      <div class="profile-meta" style="flex:1;">
+        <h2 id="profile-display-name">Nitish Kumar Rawat</h2>
+        <p class="profile-roll">GLA University Roll No: <strong id="profile-display-roll">2415001062</strong></p>
+        <span class="badge badge-gold" id="profile-display-tier" style="margin-top:6px;">Premium VIP Ultra 4K</span>
+      </div>
+    </div>
+
+    <!-- Playback & Streaming Settings -->
+    <div class="settings-section-card">
+      <h3 class="section-heading" style="margin-top:0;">Streaming & Playback Preferences</h3>
+      <form id="settings-form" class="auth-form" style="margin-top:16px;">
+        <div class="form-group">
+          <label class="form-label">Profile Full Name</label>
+          <input type="text" id="setting-name" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Default Playback Quality</label>
+          <select id="setting-quality" class="filter-select">
+            <option value="auto">Auto (Smart Dynamic ABR)</option>
+            <option value="1080p">1080p Full HD</option>
+            <option value="720p">720p HD</option>
+            <option value="480p">480p Standard Definition</option>
+            <option value="360p">360p Data Saver</option>
+          </select>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.95rem;">
+            <input type="checkbox" id="setting-autoplay" checked /> Autoplay next episode automatically
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.95rem;">
+            <input type="checkbox" id="setting-datasaver" /> Constrain bandwidth for mobile cellular connections
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="align-self:flex-start; margin-top:12px;">
+          Save Preferences
+        </button>
+      </form>
+    </div>
+
+    <!-- Viewing History & Continue Watching -->
+    <div class="settings-section-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 class="section-heading" style="margin:0;">Viewing History & Progress</h3>
+        <button class="btn btn-outline" style="font-size:0.8rem; padding:6px 12px;" onclick="clearHistory()">Clear History</button>
+      </div>
+
+      <div id="history-container"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Prince (2415001182)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('profile');
+      loadProfileData();
+      renderHistory();
+
+      document.getElementById('settings-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const profile = getUserProfile();
+        profile.name = document.getElementById('setting-name').value.trim() || profile.name;
+        profile.defaultQuality = document.getElementById('setting-quality').value;
+        profile.autoplayNext = document.getElementById('setting-autoplay').checked;
+        profile.dataSaver = document.getElementById('setting-datasaver').checked;
+        saveUserProfile(profile);
+        loadProfileData();
+      });
+    });
+
+    function loadProfileData() {
+      const p = getUserProfile();
+      document.getElementById('profile-avatar-img').src = p.avatar;
+      document.getElementById('profile-display-name').textContent = p.name;
+      document.getElementById('profile-display-roll').textContent = p.rollNo || '2415001062';
+      document.getElementById('profile-display-tier').textContent = p.tier;
+      document.getElementById('setting-name').value = p.name;
+      document.getElementById('setting-quality').value = p.defaultQuality || 'auto';
+      document.getElementById('setting-autoplay').checked = p.autoplayNext !== false;
+      document.getElementById('setting-datasaver').checked = Boolean(p.dataSaver);
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('history-container');
+      container.innerHTML = '';
+      const history = getWatchHistory();
+      const keys = Object.keys(history);
+
+      if (keys.length === 0) {
+        container.innerHTML = '<p style="color:#888; font-size:0.9rem;">No viewing history recorded yet. Play any video to track watch progress!</p>';
+        return;
+      }
+
+      keys.forEach(id => {
+        const item = getMediaById(id);
+        const data = history[id];
+        const row = document.createElement('div');
+        row.className = 'history-item';
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:16px;">
+            <img src="${item.posterUrl}" style="width:48px; height:68px; object-fit:cover; border-radius:4px;" />
+            <div>
+              <h4 style="font-size:1rem; margin-bottom:2px;">${item.title}</h4>
+              <span style="font-size:0.8rem; color:#888;">Watched ${data.percentage}% • Resumes at ${Math.floor(data.currentTime / 60)}m ${data.currentTime % 60}s</span>
+              <div class="history-progress-track" style="margin-top:6px;">
+                <div class="history-progress-fill" style="width:${data.percentage}%"></div>
+              </div>
+            </div>
+          </div>
+          <a href="player.html?id=${item.id}" class="btn btn-primary" style="font-size:0.85rem; padding:8px 16px;">
+            Resume ▶
+          </a>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function clearHistory() {
+      if (confirm('Clear all viewing progress?')) {
+        localStorage.removeItem(STORAGE_KEYS.WATCH_HISTORY);
+        renderHistory();
+        showToast('Viewing history reset.', 'info');
+      }
+    }
+  </script>
+</body>
+</html>

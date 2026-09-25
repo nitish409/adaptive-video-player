@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamFlix - Adaptive Video Player & Browsing Experience</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/rails.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <!-- Site-Wide Navigation Header -->
+  <header id="site-navbar"></header>
+
+  <!-- Hero Featured Banner -->
+  <section class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1920&q=80');">
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <div class="hero-badge-row">
+        <span class="hero-original-badge">STREAMFLIX ORIGINAL</span>
+        <span class="badge badge-gold">TOP 1 TODAY</span>
+        <span class="badge badge-gray">4K ULTRA HD</span>
+      </div>
+      <h1 class="hero-title">Cyber Genesis: 2099</h1>
+      <div class="hero-meta">
+        <span class="match-score">99% Match</span>
+        <span class="cert-badge">U/A 16+</span>
+        <span>2h 18m</span>
+        <span class="hd-badge">Dolby Atmos</span>
+      </div>
+      <p class="hero-synopsis">
+        In a rain-drenched dystopian megacity governed by rogue neural algorithms, a disgraced cyber-detective uncovers a covert syndicate synthesizing artificial souls.
+      </p>
+      <div class="hero-buttons">
+        <a href="player.html?id=cyber-genesis" class="btn btn-primary" id="btn-hero-play">
+          ▶ Play Now
+        </a>
+        <a href="details.html?id=cyber-genesis" class="btn btn-secondary">
+          ℹ More Info
+        </a>
+        <button class="btn btn-outline" onclick="toggleMyList('cyber-genesis')">
+          ＋ My List
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontally Scrollable Content Rails -->
+  <main class="page-container" style="padding-top: 10px;">
+    <!-- Rails dynamically rendered here -->
+    <div id="rails-container"></div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <span class="brand-text">STREAM<span class="brand-red">FLIX</span></span>
+        <div class="footer-links">
+          <a href="browse.html">Browse</a>
+          <a href="category.html">Categories</a>
+          <a href="mylist.html">My List</a>
+          <a href="locked.html">VIP Locked</a>
+          <a href="profile.html">Profile</a>
+          <a href="streamflix-adaptive-player.zip" download class="badge badge-red" style="padding:4px 8px; font-size:0.78rem;">⬇ Download ZIP</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Faculty Guide: Satyam Kumar Jha</p>
+        <p>&copy; 2026 StreamFlix. Developed by Nitish, Pallavit, Prabhanshu, Piyush, and Prince.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/rails.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('home');
+
+      // Render horizontal rails
+      CATEGORIES_CONFIG.forEach(config => {
+        renderContentRail('rails-container', config);
+      });
+    });
+  </script>
+</body>
+</html>

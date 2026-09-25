@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Titles, Genres & Cast - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/rails.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container">
+    <!-- Big Search Input Bar -->
+    <div style="max-width: 800px; margin: 20px auto 40px; text-align: center;">
+      <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 16px;">What are you looking for?</h1>
+      <div style="display: flex; gap: 10px;">
+        <input type="text" id="main-search-input" class="form-input" style="flex:1; padding: 16px 20px; font-size: 1.1rem; border-radius: 8px; background: #222; border: 1px solid #444;" placeholder="Search by title, director, cast member, or genre (e.g., Cyberpunk, Nolan, Action)..." autofocus />
+        <button class="btn btn-primary" id="btn-search-exec" style="padding: 0 28px; font-size: 1.1rem;">Search</button>
+      </div>
+
+      <!-- Quick Search Tag Pills -->
+      <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
+        <span style="color: #777; font-size: 0.85rem; align-self: center;">Popular:</span>
+        <button class="badge badge-gray search-tag-pill" onclick="setQuery('Sci-Fi')">🚀 Sci-Fi</button>
+        <button class="badge badge-gray search-tag-pill" onclick="setQuery('Action')">💥 Action</button>
+        <button class="badge badge-gray search-tag-pill" onclick="setQuery('Nature')">🌿 Nature</button>
+        <button class="badge badge-gray search-tag-pill" onclick="setQuery('Locked')">🔒 VIP Locked</button>
+        <button class="badge badge-gray search-tag-pill" onclick="setQuery('Nolan')">🎬 Nolan</button>
+      </div>
+    </div>
+
+    <!-- Search Results Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h3 class="section-heading" id="search-results-heading" style="margin: 0;">Type to search titles...</h3>
+      <span id="results-count" style="color: #888; font-size: 0.9rem;"></span>
+    </div>
+
+    <!-- Results Media Grid -->
+    <div class="media-grid" id="search-grid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <span class="brand-text">STREAM<span class="brand-red">FLIX</span></span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="category.html">Categories</a>
+          <a href="mylist.html">My List</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Pallavit Yadav (2415001085)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/rails.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('search');
+
+      const searchInput = document.getElementById('main-search-input');
+      const searchBtn = document.getElementById('btn-search-exec');
+      const grid = document.getElementById('search-grid');
+      const heading = document.getElementById('search-results-heading');
+      const countEl = document.getElementById('results-count');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialQuery = urlParams.get('q') || '';
+      if (initialQuery) {
+        searchInput.value = initialQuery;
+      }
+
+      function performSearch() {
+        const query = searchInput.value.trim().toLowerCase();
+        grid.innerHTML = '';
+
+        if (!query) {
+          heading.textContent = '🌟 Trending Recommendations';
+          countEl.textContent = '';
+          BUNDLED_CATALOG.slice(0, 6).forEach(item => {
+            grid.appendChild(createMediaCard(item));
+          });
+          return;
+        }
+
+        const results = BUNDLED_CATALOG.filter(item => {
+          const matchTitle = item.title.toLowerCase().includes(query);
+          const matchSynopsis = item.synopsis.toLowerCase().includes(query);
+          const matchGenre = item.genre.toLowerCase().includes(query);
+          const matchTags = item.tags.some(t => t.toLowerCase().includes(query));
+          const matchCast = item.cast.some(c => c.toLowerCase().includes(query));
+          const matchDirector = item.director ? item.director.toLowerCase().includes(query) : false;
+          const matchLocked = query === 'locked' && item.isLocked;
+
+          return matchTitle || matchSynopsis || matchGenre || matchTags || matchCast || matchDirector || matchLocked;
+        });
+
+        heading.textContent = `Search results for "${searchInput.value.trim()}"`;
+        countEl.textContent = `Found ${results.length} title${results.length === 1 ? '' : 's'}`;
+
+        if (results.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state-box" style="grid-column: 1 / -1;">
+              <span class="empty-icon">📺</span>
+              <h3 class="empty-title">Your search did not have any matches</h3>
+              <p class="empty-subtitle">Try searching for other actors, titles, or genres like "Sci-Fi" or "Action".</p>
+              <button class="btn btn-primary" onclick="setQuery('Trending')">Explore Trending</button>
+            </div>
+          `;
+          return;
+        }
+
+        results.forEach(item => {
+          grid.appendChild(createMediaCard(item));
+        });
+      }
+
+      window.setQuery = (q) => {
+        searchInput.value = q;
+        performSearch();
+      };
+
+      searchInput.addEventListener('input', performSearch);
+      searchBtn.addEventListener('click', performSearch);
+
+      performSearch();
+    });
+  </script>
+</body>
+</html>

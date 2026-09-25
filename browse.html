@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse All Titles - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/rails.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container">
+    <div class="category-hero">
+      <h1 class="category-title">Browse Titles & Movies</h1>
+      <p class="category-desc">Explore our complete catalog with dynamic genre filtering, release years, age certifications, and simulated playback.</p>
+    </div>
+
+    <!-- Filter & Sort Bar -->
+    <div class="catalog-filter-bar">
+      <div class="filter-group">
+        <label for="filter-genre" class="form-label" style="margin:0;">Genre:</label>
+        <select id="filter-genre" class="filter-select">
+          <option value="all">All Genres</option>
+          <option value="Sci-Fi">Sci-Fi & Cyberpunk</option>
+          <option value="Action">Action & Thrillers</option>
+          <option value="Documentaries">Documentaries</option>
+          <option value="Drama">Drama</option>
+        </select>
+
+        <label for="filter-year" class="form-label" style="margin:0;">Year:</label>
+        <select id="filter-year" class="filter-select">
+          <option value="all">All Years</option>
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+        </select>
+
+        <label for="filter-rating" class="form-label" style="margin:0;">Maturity:</label>
+        <select id="filter-rating" class="filter-select">
+          <option value="all">All Ratings</option>
+          <option value="U">U (Universal)</option>
+          <option value="U/A 13+">U/A 13+</option>
+          <option value="U/A 16+">U/A 16+</option>
+          <option value="A 18+">A 18+ (Restricted)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="sort-by" class="form-label" style="margin:0;">Sort By:</label>
+        <select id="sort-by" class="filter-select">
+          <option value="match">Highest Match Score</option>
+          <option value="year-desc">Release Year (Newest)</option>
+          <option value="title-asc">Title (A - Z)</option>
+          <option value="top10">Top 10 Ranks</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Media Grid -->
+    <div class="media-grid" id="browse-grid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <span class="brand-text">STREAM<span class="brand-red">FLIX</span></span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="category.html">Categories</a>
+          <a href="mylist.html">My List</a>
+          <a href="locked.html">VIP Locked</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Nitish Kumar Rawat (2415001062)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/rails.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('browse');
+
+      const grid = document.getElementById('browse-grid');
+      const genreSelect = document.getElementById('filter-genre');
+      const yearSelect = document.getElementById('filter-year');
+      const ratingSelect = document.getElementById('filter-rating');
+      const sortSelect = document.getElementById('sort-by');
+
+      function filterAndRender() {
+        grid.innerHTML = '';
+        let items = [...BUNDLED_CATALOG];
+
+        const genre = genreSelect.value;
+        if (genre !== 'all') {
+          items = items.filter(item => item.genre === genre || item.categories.includes(genre));
+        }
+
+        const year = yearSelect.value;
+        if (year !== 'all') {
+          items = items.filter(item => String(item.releaseYear) === year);
+        }
+
+        const rating = ratingSelect.value;
+        if (rating !== 'all') {
+          items = items.filter(item => item.rating === rating);
+        }
+
+        const sort = sortSelect.value;
+        if (sort === 'match') {
+          items.sort((a, b) => b.matchScore - a.matchScore);
+        } else if (sort === 'year-desc') {
+          items.sort((a, b) => b.releaseYear - a.releaseYear);
+        } else if (sort === 'title-asc') {
+          items.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sort === 'top10') {
+          items.sort((a, b) => (a.topTenRank || 99) - (b.topTenRank || 99));
+        }
+
+        if (items.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state-box" style="grid-column: 1 / -1;">
+              <span class="empty-icon">🔍</span>
+              <h3 class="empty-title">No Matching Titles</h3>
+              <p class="empty-subtitle">Try adjusting your genre or maturity filters.</p>
+              <button class="btn btn-primary" onclick="resetFilters()">Reset All Filters</button>
+            </div>
+          `;
+          return;
+        }
+
+        items.forEach((item, index) => {
+          const rank = sort === 'top10' && item.topTenRank ? item.topTenRank : null;
+          grid.appendChild(createMediaCard(item, rank));
+        });
+      }
+
+      window.resetFilters = () => {
+        genreSelect.value = 'all';
+        yearSelect.value = 'all';
+        ratingSelect.value = 'all';
+        sortSelect.value = 'match';
+        filterAndRender();
+      };
+
+      genreSelect.addEventListener('change', filterAndRender);
+      yearSelect.addEventListener('change', filterAndRender);
+      ratingSelect.addEventListener('change', filterAndRender);
+      sortSelect.addEventListener('change', filterAndRender);
+
+      filterAndRender();
+    });
+  </script>
+</body>
+</html>

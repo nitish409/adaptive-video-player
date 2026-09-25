@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Locked Content - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/rails.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container">
+    <!-- VIP Showcase Hero -->
+    <div class="details-hero" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1920&q=80');">
+      <div class="details-hero-vignette"></div>
+      <div class="details-hero-content">
+        <span class="card-locked-badge" style="position:static; margin-bottom:12px; display:inline-block; font-size:0.85rem;">
+          🔒 DRM PROTECTED & VIP CONTENT GATE
+        </span>
+        <h1 class="details-title">Protected Content Simulation</h1>
+        <p class="details-synopsis" style="max-width: 680px;">
+          This page demonstrates protected-content UI states, Widevine DRM restrictions, and parental control security as required by the GLA University Mini Project - 1 Synopsis.
+        </p>
+        <p style="color: #f5a623; font-weight: 600; margin-bottom: 20px;">
+          Demo Default PIN: <code style="background:#000; padding:2px 8px; border-radius:4px; font-size:1.1rem; color:#fff;">1234</code>
+        </p>
+        <div style="display:flex; gap:14px;">
+          <button class="btn btn-primary" onclick="openPinModal('the-vault-protocol')">
+            🔑 Enter PIN to Unlock "The Vault Protocol"
+          </button>
+          <button class="btn btn-secondary" onclick="openPinModal('black-lotus-protocol')">
+            🔑 Unlock "Black Lotus: Ghost Division"
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Locked Titles Rail -->
+    <h3 class="section-heading">Protected Titles in Catalog</h3>
+    <div class="media-grid" id="locked-grid" style="margin-bottom: 50px;"></div>
+
+    <!-- VIP Tier Comparison Table -->
+    <div class="info-card">
+      <h3 class="section-heading" style="margin-top:0;">VIP Membership Privileges</h3>
+      <table class="synopsis-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free / Standard</th>
+            <th>VIP Premium Tier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Parental Control PIN Gate</td>
+            <td>Disabled</td>
+            <td><strong style="color:#46d369;">Enforced (4-digit PIN: 1234)</strong></td>
+          </tr>
+          <tr>
+            <td>DRM Restricted Playback</td>
+            <td>Locked Overlay</td>
+            <td><strong style="color:#46d369;">Unlocked Instant Stream</strong></td>
+          </tr>
+          <tr>
+            <td>Max Simulated Bitrate</td>
+            <td>3,200 kbps (720p HD)</td>
+            <td><strong style="color:#46d369;">6,500 kbps (1080p FHD / 4K)</strong></td>
+          </tr>
+          <tr>
+            <td>Diagnostic HUD (Stats for Nerds)</td>
+            <td>Limited</td>
+            <td><strong style="color:#46d369;">Full Telemetry Access</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Interactive PIN Pad Modal Dialog -->
+  <div class="modal-backdrop" id="pin-modal">
+    <div class="pin-pad-card">
+      <span class="card-locked-badge" style="position:static; margin-bottom:8px; display:inline-block;">PARENTAL CONTROL / DRM LOCK</span>
+      <h3 style="font-size:1.4rem; font-weight:800; margin:8px 0;" id="pin-modal-title">Enter 4-Digit Security PIN</h3>
+      <p style="color:#aaa; font-size:0.85rem;" id="pin-modal-subtitle">Default Demo PIN: 1234</p>
+
+      <div class="pin-display">
+        <div class="pin-digit-box" id="pin-box-0">&bull;</div>
+        <div class="pin-digit-box" id="pin-box-1">&bull;</div>
+        <div class="pin-digit-box" id="pin-box-2">&bull;</div>
+        <div class="pin-digit-box" id="pin-box-3">&bull;</div>
+      </div>
+
+      <div class="pin-keypad">
+        <button class="pin-key" onclick="pressPinDigit('1')">1</button>
+        <button class="pin-key" onclick="pressPinDigit('2')">2</button>
+        <button class="pin-key" onclick="pressPinDigit('3')">3</button>
+        <button class="pin-key" onclick="pressPinDigit('4')">4</button>
+        <button class="pin-key" onclick="pressPinDigit('5')">5</button>
+        <button class="pin-key" onclick="pressPinDigit('6')">6</button>
+        <button class="pin-key" onclick="pressPinDigit('7')">7</button>
+        <button class="pin-key" onclick="pressPinDigit('8')">8</button>
+        <button class="pin-key" onclick="pressPinDigit('9')">9</button>
+        <button class="pin-key" onclick="clearPin()">C</button>
+        <button class="pin-key" onclick="pressPinDigit('0')">0</button>
+        <button class="pin-key" onclick="closePinModal()">&times;</button>
+      </div>
+
+      <button class="btn btn-secondary" onclick="closePinModal()" style="width:100%;">Cancel</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Prince (2415001182)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/rails.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    let activeUnlockTarget = 'the-vault-protocol';
+    let currentPinInput = '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('locked');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const reqId = urlParams.get('id');
+      if (reqId) {
+        openPinModal(reqId);
+      }
+
+      renderLockedGrid();
+    });
+
+    function renderLockedGrid() {
+      const grid = document.getElementById('locked-grid');
+      grid.innerHTML = '';
+      const lockedItems = BUNDLED_CATALOG.filter(item => item.isLocked);
+      lockedItems.forEach(item => {
+        grid.appendChild(createMediaCard(item));
+      });
+    }
+
+    function openPinModal(id) {
+      activeUnlockTarget = id;
+      currentPinInput = '';
+      updatePinDisplay();
+      const item = getMediaById(id);
+      document.getElementById('pin-modal-title').textContent = `Unlock "${item.title}"`;
+      document.getElementById('pin-modal').classList.add('active');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-modal').classList.remove('active');
+    }
+
+    function pressPinDigit(digit) {
+      if (currentPinInput.length < 4) {
+        currentPinInput += digit;
+        updatePinDisplay();
+
+        if (currentPinInput.length === 4) {
+          setTimeout(verifyPin, 150);
+        }
+      }
+    }
+
+    function clearPin() {
+      currentPinInput = '';
+      updatePinDisplay();
+    }
+
+    function updatePinDisplay() {
+      for (let i = 0; i < 4; i++) {
+        const box = document.getElementById(`pin-box-${i}`);
+        if (i < currentPinInput.length) {
+          box.textContent = currentPinInput[i];
+          box.classList.add('filled');
+        } else {
+          box.textContent = '•';
+          box.classList.remove('filled');
+        }
+      }
+    }
+
+    function verifyPin() {
+      const success = unlockVideoWithPin(activeUnlockTarget, currentPinInput);
+      if (success) {
+        closePinModal();
+        renderLockedGrid();
+        setTimeout(() => {
+          window.location.href = `player.html?id=${activeUnlockTarget}`;
+        }, 600);
+      } else {
+        showToast('Incorrect PIN! Default demo PIN is 1234.', 'error');
+        clearPin();
+      }
+    }
+  </script>
+</body>
+</html>

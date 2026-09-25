@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Your Plan - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container" style="max-width: 1000px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <span class="univ-tag">STEP 1 OF 2</span>
+      <h1 style="font-size: 2.5rem; font-weight: 900; margin: 6px 0;">Choose the plan that's right for you</h1>
+      <p style="color: #aaa; font-size: 1.05rem;">Watch all you want. Simulated subscription tiers with adaptive resolution limits.</p>
+    </div>
+
+    <!-- Pricing Grid -->
+    <div class="plan-grid">
+      <!-- Mobile Plan -->
+      <div class="plan-card">
+        <div>
+          <h3 class="plan-name">Mobile Saver</h3>
+          <div class="plan-price">₹149 <span>/ month</span></div>
+          <ul class="plan-features">
+            <li>480p SD Streaming</li>
+            <li>Data Saver Mode Enabled</li>
+            <li>Mobile phone & tablet</li>
+            <li>1 Device streaming</li>
+          </ul>
+        </div>
+        <button class="btn btn-outline" onclick="selectPlan('Mobile Saver', '480p')">Select Mobile</button>
+      </div>
+
+      <!-- Standard Plan -->
+      <div class="plan-card">
+        <div>
+          <h3 class="plan-name">Standard HD</h3>
+          <div class="plan-price">₹499 <span>/ month</span></div>
+          <ul class="plan-features">
+            <li>1080p Full HD Resolution</li>
+            <li>Stereo & 5.1 Surround</li>
+            <li>Laptop, TV, Tablet & Phone</li>
+            <li>2 Concurrent Streams</li>
+          </ul>
+        </div>
+        <button class="btn btn-outline" onclick="selectPlan('Standard HD', '1080p')">Select Standard</button>
+      </div>
+
+      <!-- Premium VIP Plan -->
+      <div class="plan-card featured">
+        <span class="plan-badge">MOST POPULAR</span>
+        <div>
+          <h3 class="plan-name">Premium VIP 4K</h3>
+          <div class="plan-price">₹649 <span>/ month</span></div>
+          <ul class="plan-features">
+            <li>4K Ultra HD + HDR10</li>
+            <li>Dolby Atmos 5.1 Spatial Audio</li>
+            <li>All VIP Locked Content Access</li>
+            <li>Parental Control PIN Management</li>
+            <li>4 Concurrent Screen Streams</li>
+          </ul>
+        </div>
+        <button class="btn btn-primary" onclick="selectPlan('Premium VIP Ultra 4K', 'auto')">Get Premium VIP</button>
+      </div>
+    </div>
+
+    <!-- Quick Registration Form -->
+    <div class="info-card" style="max-width: 600px; margin: 40px auto 0;">
+      <h3 class="section-heading" style="margin-top:0;">Create your account</h3>
+      <form id="signup-form" class="auth-form">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="e.g. Nitish Kumar Rawat" required value="Nitish Kumar Rawat" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="e.g. nitish@example.com" required value="nitish.rawat@gla.ac.in" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" placeholder="Create a password" required value="student1234" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="padding:14px; font-size:1.1rem; margin-top:8px;">
+          Start Simulated Membership
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Piyush Kumar Yadav (2415001112)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    let selectedTier = 'Premium VIP Ultra 4K';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('login');
+
+      const form = document.getElementById('signup-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const profile = getUserProfile();
+        profile.name = document.getElementById('reg-name').value.trim() || profile.name;
+        profile.tier = selectedTier;
+        saveUserProfile(profile);
+
+        showToast(`Account created! Welcome to ${selectedTier}.`, 'success');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+      });
+    });
+
+    function selectPlan(tierName, quality) {
+      selectedTier = tierName;
+      showToast(`Selected Plan: ${tierName} (${quality})`, 'info');
+      document.getElementById('signup-form').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

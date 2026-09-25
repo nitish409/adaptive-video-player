@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My List - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/rails.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container">
+    <div class="category-hero" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+      <div>
+        <h1 class="category-title">My Saved Watchlist</h1>
+        <p class="category-desc">Your personal queue of titles saved for later. Stored client-side via LocalStorage.</p>
+      </div>
+      <div>
+        <button class="btn btn-outline" onclick="clearWatchlist()" id="btn-clear-list">Clear My List</button>
+      </div>
+    </div>
+
+    <!-- Watchlist Grid -->
+    <div class="media-grid" id="mylist-grid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <span class="brand-text">STREAM<span class="brand-red">FLIX</span></span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="category.html">Categories</a>
+          <a href="mylist.html">My List</a>
+          <a href="locked.html">VIP Locked</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Piyush Kumar Yadav (2415001112)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/rails.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('mylist');
+      renderWatchlist();
+
+      window.addEventListener('streamflix:listUpdated', () => {
+        renderWatchlist();
+      });
+    });
+
+    function renderWatchlist() {
+      const grid = document.getElementById('mylist-grid');
+      grid.innerHTML = '';
+
+      const listIds = getMyList();
+      if (!listIds || listIds.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state-box" style="grid-column: 1 / -1;">
+            <span class="empty-icon">📑</span>
+            <h3 class="empty-title">Your Watchlist is Empty</h3>
+            <p class="empty-subtitle">Explore movies and click "＋ My List" to build your queue.</p>
+            <a href="browse.html" class="btn btn-primary">Browse Trending Movies</a>
+          </div>
+        `;
+        return;
+      }
+
+      listIds.forEach(id => {
+        const item = getMediaById(id);
+        if (item) {
+          grid.appendChild(createMediaCard(item));
+        }
+      });
+    }
+
+    function clearWatchlist() {
+      if (confirm('Are you sure you want to remove all items from your list?')) {
+        localStorage.setItem(STORAGE_KEYS.MY_LIST, JSON.stringify([]));
+        renderWatchlist();
+        showToast('Watchlist cleared.', 'info');
+      }
+    }
+  </script>
+</body>
+</html>

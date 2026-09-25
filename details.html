@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Details - StreamFlix</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/rails.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/remote.css">
+</head>
+<body>
+  <header id="site-navbar"></header>
+
+  <main class="page-container">
+    <!-- Hero Details Showcase -->
+    <div class="details-hero" id="details-backdrop">
+      <div class="details-hero-vignette"></div>
+      <div class="details-hero-content">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span class="hero-original-badge" id="details-original-tag" style="display:none;">STREAMFLIX ORIGINAL</span>
+          <span class="badge badge-gold" id="details-top10-tag" style="display:none;">TOP 10</span>
+          <span class="card-locked-badge" id="details-locked-tag" style="position:static; display:none;">🔒 VIP PROTECTED</span>
+        </div>
+
+        <h1 class="details-title" id="details-title">Cyber Genesis: 2099</h1>
+        <p style="font-size: 1.15rem; color: #f5a623; font-style: italic; margin-bottom: 12px;" id="details-tagline"></p>
+
+        <div class="details-meta-row">
+          <span class="match-score" id="details-match">99% Match</span>
+          <span class="cert-badge" id="details-rating">U/A 16+</span>
+          <span id="details-duration">2h 18m</span>
+          <span class="hd-badge" id="details-res">4K Ultra HD</span>
+          <span class="hd-badge" id="details-audio">Dolby Atmos</span>
+          <span id="details-year">2026</span>
+        </div>
+
+        <p class="details-synopsis" id="details-synopsis"></p>
+
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-details-play" style="font-size: 1.1rem; padding: 12px 28px;">
+            ▶ Play Video
+          </button>
+          <button class="btn btn-secondary" id="btn-details-list" onclick="toggleCurrentDetailsList()">
+            ＋ Add to My List
+          </button>
+          <a href="locked.html" class="btn btn-outline" id="btn-details-vip" style="display:none;">
+            🔐 Unlock VIP Access
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Metadata & Cast Grid -->
+    <div class="details-info-grid">
+      <div>
+        <div class="info-card" style="margin-bottom: 24px;">
+          <h3 class="section-heading" style="margin-top:0;">About this Title</h3>
+          <p style="color:#ccc; font-size: 0.95rem; line-height: 1.6;" id="details-long-desc"></p>
+          
+          <div style="margin-top: 20px;">
+            <span style="font-size:0.85rem; color:#888; text-transform:uppercase;">Genre & Categories:</span>
+            <div id="details-tags-container" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <!-- Simulated Episodes / Scenes Rail -->
+        <div class="info-card">
+          <h3 class="section-heading" style="margin-top:0;">Scenes & Chapters</h3>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; gap:16px; align-items:center; padding:10px; background:#202020; border-radius:6px; cursor:pointer;" onclick="playFromChapter(0)">
+              <span style="font-size:1.4rem; font-weight:800; color:#777; width:28px;">1</span>
+              <div style="flex:1;">
+                <h4 style="font-size:0.95rem;">Prologue: The Awakening</h4>
+                <p style="font-size:0.8rem; color:#888;">Opening sequence and neural matrix connection.</p>
+              </div>
+              <span style="font-size:0.85rem; color:#aaa;">00:00</span>
+            </div>
+
+            <div style="display:flex; gap:16px; align-items:center; padding:10px; background:#202020; border-radius:6px; cursor:pointer;" onclick="playFromChapter(1200)">
+              <span style="font-size:1.4rem; font-weight:800; color:#777; width:28px;">2</span>
+              <div style="flex:1;">
+                <h4 style="font-size:0.95rem;">Chapter 2: The Neon Syndicate</h4>
+                <p style="font-size:0.8rem; color:#888;">Infiltration into the high-frequency trading server floor.</p>
+              </div>
+              <span style="font-size:0.85rem; color:#aaa;">20:00</span>
+            </div>
+
+            <div style="display:flex; gap:16px; align-items:center; padding:10px; background:#202020; border-radius:6px; cursor:pointer;" onclick="playFromChapter(2700)">
+              <span style="font-size:1.4rem; font-weight:800; color:#777; width:28px;">3</span>
+              <div style="flex:1;">
+                <h4 style="font-size:0.95rem;">Chapter 3: Climax & Resolution</h4>
+                <p style="font-size:0.8rem; color:#888;">The final standoff at the quantum core.</p>
+              </div>
+              <span style="font-size:0.85rem; color:#aaa;">45:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Specs & Cast Sidebar -->
+      <div>
+        <div class="info-card">
+          <h3 class="section-heading" style="margin-top:0;">Specifications</h3>
+          <div class="spec-list">
+            <div class="spec-item">
+              <span class="k">Director:</span>
+              <span class="v" id="details-director">Denis Villeneuve-Sim</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">Starring:</span>
+              <span class="v" id="details-cast" style="text-align:right;"></span>
+            </div>
+            <div class="spec-item">
+              <span class="k">Audio:</span>
+              <span class="v" id="details-audio-spec">Dolby Atmos (5.1)</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">Subtitles:</span>
+              <span class="v">English, Hindi, Spanish [CC]</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">Video Stream:</span>
+              <span class="v">Adaptive Bitrate (H.265 / 4K)</span>
+            </div>
+            <div class="spec-item">
+              <span class="k">DRM Protection:</span>
+              <span class="v" id="details-drm-spec">Standard Web Media</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- More Like This Recommendations -->
+    <h3 class="section-heading">More Like This</h3>
+    <div class="media-grid" id="related-grid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <span class="brand-text">STREAM<span class="brand-red">FLIX</span></span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="browse.html">Browse</a>
+          <a href="category.html">Categories</a>
+          <a href="mylist.html">My List</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-univ">GLA University • Mini Project - 1 • Section AE, Batch 8 • Prabhanshu Thakur (2415001118)</p>
+        <p>&copy; 2026 StreamFlix.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/catalog.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/rails.js"></script>
+  <script src="js/remote.js"></script>
+  <script>
+    let currentId = 'cyber-genesis';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderNavbar('browse');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      currentId = urlParams.get('id') || 'cyber-genesis';
+      const item = getMediaById(currentId);
+
+      document.title = `${item.title} - StreamFlix`;
+      document.getElementById('details-backdrop').style.backgroundImage = `url('${item.backdropUrl}')`;
+      document.getElementById('details-title').textContent = item.title;
+      document.getElementById('details-tagline').textContent = item.tagline ? `"${item.tagline}"` : '';
+      document.getElementById('details-match').textContent = `${item.matchScore}% Match`;
+      document.getElementById('details-rating').textContent = item.rating;
+      document.getElementById('details-duration').textContent = item.duration;
+      document.getElementById('details-res').textContent = item.resolution;
+      document.getElementById('details-audio').textContent = item.audio;
+      document.getElementById('details-year').textContent = item.releaseYear;
+      document.getElementById('details-synopsis').textContent = item.synopsis;
+      document.getElementById('details-long-desc').textContent = item.synopsis + " Filmed with ultra-high resolution cinema cameras and mastered for HDR10 and Dolby Vision standards with spatial audio positioning.";
+      document.getElementById('details-director').textContent = item.director || 'Christopher Nolan-Sim';
+      document.getElementById('details-cast').textContent = item.cast.join(', ');
+      document.getElementById('details-audio-spec').textContent = item.audio;
+
+      if (item.isOriginal) document.getElementById('details-original-tag').style.display = 'inline-block';
+      if (item.topTenRank) {
+        const topEl = document.getElementById('details-top10-tag');
+        topEl.textContent = `TOP ${item.topTenRank} TODAY`;
+        topEl.style.display = 'inline-block';
+      }
+
+      if (item.isLocked && !isContentUnlocked(item.id)) {
+        document.getElementById('details-locked-tag').style.display = 'inline-block';
+        document.getElementById('details-drm-spec').textContent = 'Widevine DRM (PIN 1234)';
+        document.getElementById('btn-details-vip').style.display = 'inline-flex';
+      }
+
+      // Play button action
+      document.getElementById('btn-details-play').addEventListener('click', () => {
+        handleCardPlay(item.id);
+      });
+
+      // My list button state
+      updateListBtn();
+
+      // Render tags
+      const tagContainer = document.getElementById('details-tags-container');
+      item.tags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'badge badge-gray';
+        span.textContent = t;
+        tagContainer.appendChild(span);
+      });
+
+      // Related titles
+      const relatedGrid = document.getElementById('related-grid');
+      const related = getRelatedItems(item.id, 6);
+      related.forEach(r => {
+        relatedGrid.appendChild(createMediaCard(r));
+      });
+    });
+
+    function updateListBtn() {
+      const btn = document.getElementById('btn-details-list');
+      const inList = isInMyList(currentId);
+      if (inList) {
+        btn.textContent = '✓ In My List';
+        btn.classList.add('btn-primary');
+        btn.classList.remove('btn-secondary');
+      } else {
+        btn.textContent = '＋ Add to My List';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+      }
+    }
+
+    function toggleCurrentDetailsList() {
+      toggleMyList(currentId);
+      updateListBtn();
+    }
+
+    function playFromChapter(seconds) {
+      saveWatchProgress(currentId, seconds, 7200);
+      window.location.href = `player.html?id=${currentId}`;
+    }
+  </script>
+</body>
+</html>
